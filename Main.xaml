@@ -1,0 +1,154 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="In_folderPath" Type="InArgument(x:String)" />
+    <x:Property Name="In_apiKey" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>655,1901</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="24">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>UiPath.Vision.OCR</x:String>
+      <x:String>UiPath.OCR.Contracts</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="36">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Vision.Core</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Contracts</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.CV</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Description : It will help you to extract details from multiple cheques. &#xA;Execution : You need to provide the value of Arguments In_folderPath (path of folder containing cheque images),  In_apiKey (Google Cloud Vision Api Key) and run the bot. The bot appends the extracted data in Text file which is found in &quot;Output Folder&quot;. " DisplayName="Data Extraction from Cheque" sap:VirtualizedContainerService.HintSize="532,1736" sap2010:WorkflowViewState.IdRef="Sequence_10">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Int32" Name="fileCount" />
+      <Variable x:TypeArguments="x:String" Name="folderPath" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Output Folder" sap:VirtualizedContainerService.HintSize="490,79" sap2010:WorkflowViewState.IdRef="CreateDirectory_4" Path="[Environment.CurrentDirectory +&quot;\Output Folder&quot;]" />
+    <ui:InvokeCode ContinueOnError="{x:Null}" Code="Array.ForEach(Directory.GetFiles(OutputPath),Sub(x) File.Delete(x))" DisplayName="Invoke code to delete all files in Output Folder" sap:VirtualizedContainerService.HintSize="490,164" sap2010:WorkflowViewState.IdRef="InvokeCode_5">
+      <ui:InvokeCode.Arguments>
+        <InArgument x:TypeArguments="x:String" x:Key="OutputPath">[Environment.CurrentDirectory +"\Output Folder"]</InArgument>
+      </ui:InvokeCode.Arguments>
+    </ui:InvokeCode>
+    <Assign sap:VirtualizedContainerService.HintSize="490,60" sap2010:WorkflowViewState.IdRef="Assign_7">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Int32">[fileCount]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Int32">1</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="490,1149" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[Directory.GetFiles(In_folderPath)]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:String">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:String" Name="item" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="454,1015" sap2010:WorkflowViewState.IdRef="Sequence_9">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="x:String" Name="Response" />
+              <Variable x:TypeArguments="ui:Image" Name="Photo" />
+              <Variable x:TypeArguments="x:String" Name="Information" />
+              <Variable x:TypeArguments="s:String[]" Name="extractedInfo" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:LoadImage DisplayName="Load Image" FileName="[item]" sap:VirtualizedContainerService.HintSize="412,59" sap2010:WorkflowViewState.IdRef="LoadImage_3" Image="[Photo]" />
+            <ui:GoogleCloudOCR FilterRegion="{x:Null}" Language="{x:Null}" Output="{x:Null}" Profile="{x:Null}" Scale="{x:Null}" ApiKey="[In_apiKey]" ComputeSkewAngle="False" DisplayName="Google Cloud Vision OCR" ExtractWords="False" sap:VirtualizedContainerService.HintSize="412,22" sap2010:WorkflowViewState.IdRef="GoogleCloudOCR_4" Image="[Photo]" ResizeToApiLimits="False" Text="[Response]" />
+            <ui:InvokeCode ContinueOnError="{x:Null}" Code="int DateCount = 0;&#xA;            string AccountNo = &quot;&quot;;&#xA;            string IFSC = &quot;&quot;;&#xA;            string RupeesInWords = &quot;&quot;;&#xA;            string BankName = &quot;&quot;;&#xA;            string Pay = &quot;&quot;;&#xA;            string Date = &quot;&quot;;&#xA;           &#xA;            if (response.Contains(&quot;IFSC&quot;) || response.Contains(&quot;IFS Code&quot;))&#xA;            {&#xA;                if (response.Contains(&quot;IFSC&quot;))&#xA;                {&#xA;                    IFSC = response.Substring(response.IndexOf(&quot;IFSC&quot;));&#xA;                }&#xA;                else&#xA;                {&#xA;                    IFSC = response.Substring(response.IndexOf(&quot;IFS Code&quot;));&#xA;                }                    &#xA;                string[] Ifsc = IFSC.Split(new[] { Environment.NewLine }, StringSplitOptions.None);&#xA;                IFSC = Ifsc[0];&#xA;                extractedInfo = IFSC + &quot;,&quot;;&#xA;            }            &#xA;            &#xA;            if (Regex.IsMatch(response, &quot;A.c No\\.&quot;)) &#xA;            {&#xA;                AccountNo = response.Substring(response.IndexOf(Regex.Match(response, &quot;A.c No\\.&quot;).ToString()));&#xA;                string[] AccountNumber = AccountNo.Split(new[] { Environment.NewLine }, StringSplitOptions.None);&#xA;                if (AccountNumber[1].All(char.IsDigit))&#xA;                {&#xA;                    AccountNo = AccountNumber[1];&#xA;                }&#xA;                else&#xA;                {&#xA;                    AccountNo = &quot;&quot;;&#xA;                }&#xA;                extractedInfo = extractedInfo + &quot;Account No. &quot; + AccountNo + &quot;,&quot;;&#xA;            }&#xA;            &#xA;            if(response.Contains(&quot;Date&quot;) || response.Contains(&quot;DATE&quot;))&#xA;            {&#xA;                DateCount = 2;&#xA;            }&#xA;            else&#xA;            {&#xA;                DateCount = 1;&#xA;            }&#xA;&#xA;            string[] AllLines = response.Split(new[] { Environment.NewLine }, StringSplitOptions.None);&#xA;            for (int i = 0; i &lt; AllLines.Count(); i++)&#xA;            {&#xA;                string line = AllLines[i];&#xA;                if (line.Contains(&quot;PAY&quot;) || line.Contains(&quot;Pay&quot;))&#xA;                {&#xA;                    string[] words = line.Split(' ');&#xA;                    if (words[0].ToUpper() == &quot;PAY&quot;)&#xA;                    {&#xA;                        if (words.Count() == 1)&#xA;                        {&#xA;                            Pay = &quot;Pay: &quot; + AllLines[i+1];&#xA;                        }&#xA;                        else&#xA;                        {&#xA;                            Pay = AllLines[i];                            &#xA;                        }&#xA;                        extractedInfo = extractedInfo + Pay + &quot;,&quot;;&#xA;                    }                   &#xA;                }&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;                if (line.Contains(&quot;Bank&quot;) || line.Contains(&quot;BANK&quot;))&#xA;                {&#xA;                    if (!line.ToUpper().Contains(&quot;PAY&quot;) &amp;&amp; !line.ToUpper().Contains(&quot;BRANCH&quot;) &amp;&amp; !line.ToUpper().Contains(&quot;LTD.&quot;))&#xA;                    {&#xA;                        BankName = AllLines[i];&#xA;                        extractedInfo = extractedInfo + &quot;Bank Name: &quot; + BankName + &quot;,&quot;;&#xA;                    }&#xA;                }&#xA;&#xA;                if (line.Contains(&quot;Rupees&quot;) || line.Contains(&quot;RUPEES&quot;))&#xA;                {                 &#xA;                        for (int j = i; j &lt; AllLines.Count(); j++)&#xA;                        {&#xA;                            if (AllLines[j].Contains(&quot;only&quot;) || AllLines[j].Contains(&quot;ONLY&quot;) || AllLines[j].Contains(&quot;Only&quot;))&#xA;                            {&#xA;                                RupeesInWords = RupeesInWords + AllLines[j];&#xA;                                j = AllLines.Count();&#xA;                            }&#xA;                            else&#xA;                            {&#xA;                                RupeesInWords = RupeesInWords + AllLines[j];&#xA;                            }&#xA;                        }&#xA;                    Regex pattern = new Regex(&quot;[*,1234567890/-]&quot;);&#xA;                    RupeesInWords = pattern.Replace(RupeesInWords, &quot;&quot;);&#xA;                    extractedInfo = extractedInfo + RupeesInWords + &quot;,&quot;;                    &#xA;                }&#xA;&#xA;                if (DateCount == 1)&#xA;                {&#xA;                    line = AllLines[i].Replace(&quot; &quot;, &quot;&quot;);&#xA;                    if ((line.Length == 8))&#xA;                    {                        &#xA;                        Date = line.Substring(4, 4) + &quot;-&quot; + line.Substring(2, 2) + &quot;-&quot; + line.Substring(0, 2); &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;DateTime dDate;&#xA;                        if (DateTime.TryParse(Date, out dDate))&#xA;                        {&#xA;                            Date = line.Substring(0, 2) + &quot;-&quot; + line.Substring(2, 2) + &quot;-&quot; + line.Substring(4, 4);&#xA;                            extractedInfo = extractedInfo + &quot;Date: &quot; + Date + &quot;,&quot;;&#xA;                        }                        &#xA;                    }&#xA;                }&#xA;                if (DateCount == 2)&#xA;                {&#xA;                    if (line.Contains(&quot;Date&quot;) || line.Contains(&quot;DATE&quot;))&#xA;                    {&#xA;                        Date = AllLines[i];&#xA;                        extractedInfo = extractedInfo + Date + &quot;,&quot;;&#xA;                    }&#xA;                }&#xA;                &#xA;            }&#xA;&#x9;&#x9;&#x9;" DisplayName="Extract Details " sap:VirtualizedContainerService.HintSize="412,164" sap2010:WorkflowViewState.IdRef="InvokeCode_6" Language="CSharp">
+              <ui:InvokeCode.Arguments>
+                <InArgument x:TypeArguments="x:String" x:Key="response">[Response]</InArgument>
+                <OutArgument x:TypeArguments="x:String" x:Key="extractedInfo">[Information]</OutArgument>
+              </ui:InvokeCode.Arguments>
+            </ui:InvokeCode>
+            <Assign sap:VirtualizedContainerService.HintSize="412,60" sap2010:WorkflowViewState.IdRef="Assign_8">
+              <Assign.To>
+                <OutArgument x:TypeArguments="s:String[]">[extractedInfo]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="s:String[]">[Split (Information , “,”)]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="412,358" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[extractedInfo]">
+              <ui:ForEach.Body>
+                <ActivityAction x:TypeArguments="x:String">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="x:String" Name="item" />
+                  </ActivityAction.Argument>
+                  <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="376,224" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <ui:AppendLine DisplayName="Append Line" FileName="[Environment.CurrentDirectory+&quot;\Output Folder\Output(&quot;+fileCount.ToString+&quot;).txt&quot;]" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="AppendLine_2" Text="[item]" />
+                  </Sequence>
+                </ActivityAction>
+              </ui:ForEach.Body>
+            </ui:ForEach>
+            <Assign sap:VirtualizedContainerService.HintSize="412,60" sap2010:WorkflowViewState.IdRef="Assign_9">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:Int32">[fileCount]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:Int32">[fileCount+1]</InArgument>
+              </Assign.Value>
+            </Assign>
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEach.Body>
+    </ui:ForEach>
+  </Sequence>
+</Activity>
